@@ -1,7 +1,7 @@
 import { SiThunderstore } from "react-icons/si";
 import { RiAddLargeFill } from "react-icons/ri";
 
-const Home = () => {
+const Home = ({ handleProj }) => {
   return (
     <div class="px-4 py-5 text-center g-5 ">
       <SiThunderstore style={{ width: "72px", height: "57px" }} />
@@ -10,7 +10,11 @@ const Home = () => {
         <h5 class="my-4">No Project Selected</h5>
         <p class="lead mb-4">Select a project or get started with a new one</p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-content-sm-center ">
-          <button type="button" class="btn btn-primary btn-lg px-4 gap-3">
+          <button
+            type="button"
+            class="btn btn-primary btn-lg px-4 gap-3"
+            onClick={handleProj}
+          >
             <span class="mx-2">
               <RiAddLargeFill />
             </span>
