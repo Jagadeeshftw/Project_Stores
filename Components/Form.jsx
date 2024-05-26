@@ -1,7 +1,7 @@
-import { Container, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { useState } from "react";
 
-const Form = ({ handleIsActive, allProjects }) => {
+const Form = ({ handleIsActive, allProjects, setAllProjects }) => {
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
@@ -24,37 +24,20 @@ const Form = ({ handleIsActive, allProjects }) => {
       dueDate: dueDate.trim() !== "",
     };
     setIsValid(newIsValid);
-    return newIsValid.Overall;
+    return Object.values(newIsValid).every(Boolean);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitted(true);
     if (handleValidation()) {
-      const formData = {
+      const newProject = {
         projectTitle,
         projectDescription,
         dueDate,
       };
-      allProjects.push(formData);
-
+      setAllProjects([...allProjects, newProject]);
       handleIsActive("MyProjects");
-      // Form is valid, proceed with form submission logic
-      console.log("Form submitted successfully!", formData);
-      // Optionally, you can reset the form fields and validation state here
-      setProjectTitle("");
-      setProjectDescription("");
-      setDueDate("");
-      setIsSubmitted(false);
-      setIsValid({
-        Overall: true,
-        projectTitle: true,
-        projectDescription: true,
-        dueDate: true,
-      });
-    } else {
-      // Form is invalid, show validation feedback
-      console.log("Form is invalid, please correct the errors!");
     }
   };
 
@@ -74,7 +57,7 @@ const Form = ({ handleIsActive, allProjects }) => {
                 className={`form-control ${
                   isSubmitted &&
                   (isValid.projectTitle
-                    ? isValid.Overall && "is-valid"
+                    ? !isValid.Overall && "is-valid"
                     : "is-invalid")
                 }`}
                 id="floatingInputValidationServer01"
@@ -98,7 +81,7 @@ const Form = ({ handleIsActive, allProjects }) => {
                 className={`form-control ${
                   isSubmitted &&
                   (isValid.projectDescription
-                    ? isValid.Overall && "is-valid"
+                    ? !isValid.Overall && "is-valid"
                     : "is-invalid")
                 }`}
                 placeholder="Project Description"
@@ -124,7 +107,7 @@ const Form = ({ handleIsActive, allProjects }) => {
                 className={`form-control ${
                   isSubmitted &&
                   (isValid.dueDate
-                    ? isValid.Overall && "is-valid"
+                    ? !isValid.Overall && "is-valid"
                     : "is-invalid")
                 }`}
                 id="floatingInputValidationServer03"
