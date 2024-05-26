@@ -1,9 +1,7 @@
 import { SiThunderstore } from "react-icons/si";
-const SideBar = () => {
+const SideBar = ({ handleIsActive, getActiveBar }) => {
   return (
-    <div
-      className="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary"
-    > 
+    <div className="d-flex flex-column flex-shrink-0 p-3">
       <a
         href="/"
         className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
@@ -14,7 +12,16 @@ const SideBar = () => {
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
-          <a href="#" className="nav-link active" aria-current="page">
+          <a
+            href="#"
+            className={
+              getActiveBar === "Home"
+                ? "nav-link active"
+                : "nav-link link-body-emphasis"
+            }
+            aria-current="page"
+            onClick={() => handleIsActive("Home")}
+          >
             <svg className="bi pe-none me-2" width="16" height="16">
               <use xlinkHref="#home" />
             </svg>
@@ -22,7 +29,15 @@ const SideBar = () => {
           </a>
         </li>
         <li>
-          <a href="#" className="nav-link link-body-emphasis">
+          <a
+            href="#"
+            className={
+              getActiveBar === "MyProjects"
+                ? "nav-link active"
+                : "nav-link link-body-emphasis"
+            }
+            onClick={() => handleIsActive("MyProjects")}
+          >
             <svg className="bi pe-none me-2" width="16" height="16">
               <use xlinkHref="#speedometer2" />
             </svg>

@@ -1,7 +1,7 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Col } from "react-bootstrap";
 import { useState } from "react";
 
-const Form = ({cancelForm}) => {
+const Form = ({ handleIsActive, allProjects }) => {
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
@@ -24,15 +24,34 @@ const Form = ({cancelForm}) => {
       dueDate: dueDate.trim() !== "",
     };
     setIsValid(newIsValid);
-    return Object.values(newIsValid).every(Boolean);
+    return newIsValid.Overall;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitted(true);
     if (handleValidation()) {
+      const formData = {
+        projectTitle,
+        projectDescription,
+        dueDate,
+      };
+      allProjects.push(formData);
+
+      handleIsActive("MyProjects");
       // Form is valid, proceed with form submission logic
-      console.log("Form submitted successfully!");
+      console.log("Form submitted successfully!", formData);
+      // Optionally, you can reset the form fields and validation state here
+      setProjectTitle("");
+      setProjectDescription("");
+      setDueDate("");
+      setIsSubmitted(false);
+      setIsValid({
+        Overall: true,
+        projectTitle: true,
+        projectDescription: true,
+        dueDate: true,
+      });
     } else {
       // Form is invalid, show validation feedback
       console.log("Form is invalid, please correct the errors!");
@@ -55,7 +74,7 @@ const Form = ({cancelForm}) => {
                 className={`form-control ${
                   isSubmitted &&
                   (isValid.projectTitle
-                    ? !isValid.Overall && "is-valid"
+                    ? isValid.Overall && "is-valid"
                     : "is-invalid")
                 }`}
                 id="floatingInputValidationServer01"
@@ -79,7 +98,7 @@ const Form = ({cancelForm}) => {
                 className={`form-control ${
                   isSubmitted &&
                   (isValid.projectDescription
-                    ? !isValid.Overall && "is-valid"
+                    ? isValid.Overall && "is-valid"
                     : "is-invalid")
                 }`}
                 placeholder="Project Description"
@@ -105,7 +124,7 @@ const Form = ({cancelForm}) => {
                 className={`form-control ${
                   isSubmitted &&
                   (isValid.dueDate
-                    ? !isValid.Overall && "is-valid"
+                    ? isValid.Overall && "is-valid"
                     : "is-invalid")
                 }`}
                 id="floatingInputValidationServer03"
@@ -122,7 +141,11 @@ const Form = ({cancelForm}) => {
               <button className="btn btn-primary" type="submit">
                 Create
               </button>
-              <button className="btn btn-danger ms-2 " type="button" onClick={cancelForm}>
+              <button
+                className="btn btn-danger ms-2"
+                type="button"
+                onClick={() => handleIsActive("Home")}
+              >
                 Cancel
               </button>
             </div>
